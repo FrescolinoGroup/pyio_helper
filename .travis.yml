@@ -1,18 +1,12 @@
 language: python
 cache: pip
-#~ sudo: true
 python:
-    - "2.7"
     - "3.4"
     - "3.5"
 
-# if scipy is needed
-#~ before_install:
-    #~ - sudo apt-get update -qq
-    #~ - sudo apt-get install -qq liblapack.so 
-
 install:
     - pip install .
+    - pip install -U pytest
 
 # run tests
 script:

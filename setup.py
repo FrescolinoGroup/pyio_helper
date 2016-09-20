@@ -25,7 +25,7 @@ with open('version.txt', 'r') as f:
     
 requirements = ['msgpack-python', 'fsc.export', 'numpy']
 if sys.version_info < (3,):
-    requirements.append('fsc')
+    raise ValueError('only Python 3.x and higher are supported')
 
 setup(
     name=pkgname_qualified,
@@ -42,7 +42,6 @@ setup(
     long_description=readme,
     classifiers=[
         'License :: OSI Approved :: Apache Software License',
-        'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3',
         'Topic :: Utilities'
     ],

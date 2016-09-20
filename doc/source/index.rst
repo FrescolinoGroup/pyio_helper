@@ -1,15 +1,14 @@
 pyio_helper
 ===========
 
-The developer of this module is too lazy to write an introduction. He brings shame and dishonor upon himself and, more importantly, the great C. Frescolino. Let it be known that he shall acquire beers for all frescolino developers to redeem his sins.
+This module is a helper for saving and loading data from files, using a specific encoding. It also contains a default encoding, which can serialize the common built-in and ``numpy`` data types.
 
-Tutorial, Examples and Documentation
+Tutorial and Documentation
 ====================================
 .. toctree::
     :maxdepth: 2
     
     tutorial.rst
-    examples.rst
     documentation.rst
 
 Indices and tables
