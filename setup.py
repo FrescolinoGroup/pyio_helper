@@ -23,7 +23,7 @@ except IOError:
 with open('version.txt', 'r') as f:
     version = f.read().strip()
     
-requirements = []
+requirements = ['msgpack', 'fsc.export']
 if sys.version_info < (3,):
     requirements.append('fsc')
 

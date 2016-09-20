@@ -8,11 +8,11 @@
 """Free functions for saving and loading objects with a given encoding."""
 
 import os
+import json
+import pickle
 import tempfile
 from collections import namedtuple, OrderedDict
 
-import json
-import pickle
 import msgpack
 
 from fsc.export import export
