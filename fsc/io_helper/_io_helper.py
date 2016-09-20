@@ -25,13 +25,13 @@ def set_encoding(encoding):
     global SERIALIZER_SPECS, EXT_MAPPING 
     SERIALIZER_SPECS = OrderedDict(
         [
-            (msgpack, SerializerSpecs(
-                binary=True,
+            (json, SerializerSpecs(
+                binary=False, 
                 encode_kwargs=dict(default=encoding.encode),
                 decode_kwargs=dict(object_hook=encoding.decode)
             )), 
-            (json, SerializerSpecs(
-                binary=False, 
+            (msgpack, SerializerSpecs(
+                binary=True,
                 encode_kwargs=dict(default=encoding.encode),
                 decode_kwargs=dict(object_hook=encoding.decode)
             )), 
