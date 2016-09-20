@@ -52,7 +52,7 @@ def set_encoding(encoding):
     }
 
 def _get_serializer(file_path, use_default=False):
-    """Tries to determine the correct serializer from the file extension. If none can be determined, falls back to the default (msgpack)"""
+    """Tries to determine the correct serializer from the file extension. If none can be determined, falls back to the default (json) if ``use_default`` is true, otherwise it throws an error."""
     _, file_ext = os.path.splitext(file_path)
     try:
         return EXT_MAPPING[file_ext.lower().lstrip('.')]
@@ -60,7 +60,7 @@ def _get_serializer(file_path, use_default=False):
         if use_default:
             return next(iter(SERIALIZER_SPECS.keys()))
         else:
-            raise ValueError("Could not guess serializer from file ending {}".format(file_ext))
+            raise ValueError("Could not guess serializer from file ending '{}'".format(file_ext))
 
 @export
 def save(obj, file_path, serializer='auto'):
@@ -71,7 +71,7 @@ def save(obj, file_path, serializer='auto'):
     :param file_path:   Path to the file.
     :type file_path:    str
 
-    :param serializer:  The serializer to be used. Valid options are ``msgpack`` ``json`` and ``pickle``. By default, the serializer is determined from the file extension. If this does not work, ``msgpack`` is used. 
+    :param serializer:  The serializer to be used. Valid options are ``msgpack`` ``json`` and ``pickle``. By default, the serializer is determined from the file extension. If this does not work, ``json`` is used. 
     :type serializer:   module
     """
     if serializer == 'auto':
@@ -94,7 +94,8 @@ def load(file_path, serializer='auto'):
     :param file_path:   Path to the file.
     :type file_path:    str
     
-    :param serializer:  The serializer which should be used to load the result. By default, it tries to guess from the file extension, but all three serializers (JSON, msgpack, pickle) are tried if that does not succeed. If a specific serializer is given, the others are not tried.
+    :param serializer:  The serializer which should be used to load the result. By default, it tries to guess from the file extension. If no serializer is given and it cannot be guessed from the file ending, an error is thrown, to avoid loading corrupted data.
+    :type serializer:   module
     """
     if serializer == 'auto':
         serializer = _get_serializer(file_path)
