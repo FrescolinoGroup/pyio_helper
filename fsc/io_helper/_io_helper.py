@@ -51,13 +51,16 @@ def set_encoding(encoding):
         ]
     }
 
-def _get_serializer(file_path):
+def _get_serializer(file_path, use_default=False):
     """Tries to determine the correct serializer from the file extension. If none can be determined, falls back to the default (msgpack)"""
     _, file_ext = os.path.splitext(file_path)
     try:
         return EXT_MAPPING[file_ext.lower().lstrip('.')]
     except KeyError:
-        return next(iter(SERIALIZER_SPECS.keys()))
+        if use_default:
+            return next(iter(SERIALIZER_SPECS.keys()))
+        else:
+            raise ValueError("Could not guess serializer from file ending {}".format(file_ext))
 
 @export
 def save(obj, file_path, serializer='auto'):
@@ -72,7 +75,7 @@ def save(obj, file_path, serializer='auto'):
     :type serializer:   module
     """
     if serializer == 'auto':
-        serializer = _get_serializer(file_path)
+        serializer = _get_serializer(file_path, use_default=True)
     specs = SERIALIZER_SPECS[serializer]
     with tempfile.NamedTemporaryFile(
         dir=os.path.dirname(os.path.abspath(file_path)),
@@ -95,20 +98,7 @@ def load(file_path, serializer='auto'):
     """
     if serializer == 'auto':
         serializer = _get_serializer(file_path)
-        serializer_list = [serializer] + [
-            k for k in SERIALIZER_SPECS.keys() if k is not serializer
-        ]
-    else:
-        serializer_list = [serializer]
-    for s in serializer_list:
-        try:
-            specs = SERIALIZER_SPECS[s]
-            with open(file_path, 'rb' if specs.binary else 'r') as f:
-                return s.load(f, **specs.decode_kwargs)
-        except OSError as e:
-            raise e
-        except Exception as e:
-            pass
-    else:
-        raise ValueError('File could not be deserialized with any of the used serializers ({}).'.format(', '.join([s.__name__ for s in serializer_list])))
+    specs = SERIALIZER_SPECS[serializer]
+    with open(file_path, 'rb' if specs.binary else 'r') as f:
+        return serializer.load(f, **specs.decode_kwargs)
             
