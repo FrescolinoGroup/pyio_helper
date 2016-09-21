@@ -5,4 +5,8 @@
 # Date:    21.09.2016 11:37:00 CEST
 # File:    __init__.py
 
+"""
+This module contains the encodings that are defined within io_helper.
+"""
+
 from . import default

@@ -3,7 +3,11 @@
 #
 # Author:  Dominik Gresch <greschd@gmx.ch>
 # Date:    15.04.2016 10:21:56 CEST
-# File:    _encoding.py
+# File:    default.py
+
+"""
+Doc
+"""
 
 import numbers
 import contextlib
@@ -17,7 +21,7 @@ from fsc.export import export
 @singledispatch
 def encode(obj):
     """
-    Encodes Z2Pack types into JSON / msgpack - compatible types.
+    Encodes numpy and built-in types into JSON / msgpack - compatible types.
     """
     raise TypeError('cannot JSONify {} object {}'.format(type(obj), obj))
 
@@ -43,7 +47,7 @@ def _(obj):
 @singledispatch
 def decode(obj):
     """
-    Decodes JSON / msgpack objects into the corresponding types.
+    Decodes JSON / msgpack objects into the corresponding built-in types.
     """
     return obj
 

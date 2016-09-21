@@ -78,15 +78,19 @@ class SerializerDispatch:
         if serializer == 'auto':
             serializer = self._get_serializer(file_path, use_default=True)
         specs = self.serializer_specs[serializer]
-        with tempfile.NamedTemporaryFile(
-            dir=os.path.dirname(os.path.abspath(file_path)),
-            delete=False,
-            mode='wb' if specs.binary else 'w'
-        ) as f:
-            serializer.dump(obj, f, **specs.encode_kwargs)
-            tmp_path = f.name
-        # closing necessary on Windows
-        os.replace(tmp_path, file_path)
+        try:
+            with tempfile.NamedTemporaryFile(
+                dir=os.path.dirname(os.path.abspath(file_path)),
+                delete=False,
+                mode='wb' if specs.binary else 'w'
+            ) as f:
+                serializer.dump(obj, f, **specs.encode_kwargs)
+                tmp_path = f.name
+            # closing necessary on Windows
+            os.replace(tmp_path, file_path)
+        except Exception as e:
+            os.remove(tmp_path)
+            raise e
 
     def load(self, file_path, serializer='auto'):
         """Loads the object that was saved to ``file_path``.
