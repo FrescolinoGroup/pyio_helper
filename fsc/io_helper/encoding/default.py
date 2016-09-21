@@ -6,7 +6,7 @@
 # File:    default.py
 
 """
-Doc
+This is an example implementation of an encoding, to be used as input for :class:`.SerializerDispatch`.
 """
 
 import numbers

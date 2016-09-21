@@ -3,25 +3,35 @@ Tutorial
 
 This tutorial will guide you through the basic steps of using the ``io_helper`` module. 
 
+Creating a :class:`.SerializerDispatch` instance
+------------------------------------------------
+
+The first thing you need to do is creating an instance of the :class:`.SerializerDispatch` class. The constructor takes a single argument -- an object which has two members ``encode`` and ``decode``. The ``encode`` function should convert the object into a JSON / msgpack - compatible type, and ``decode`` should do the inverse. When saving / loading, the functions are passed as the ``default`` and ``object_hook`` parameters, respectively (see :py:func:`json.dump` and :py:func:`json.load`).
+
+Unless you want to specify a custom encoding, you can use :mod:`.encoding.default`. This encoding handles common numpy and built-in types.
+
+.. code :: python
+
+    import fsc.io_helper as io
+    IO_HANDLER = io.SerializerDispatch(io.encoding.default)
+
 Saving and loading
 ------------------
 
-First off, let's try saving some data to a file, using the :func:`.save` function:
+Having created the :class:`.SerializerDispatch` instance, you can use it to save data to a file:
 
 .. code :: python
 
-    from fsc.io_helper import save
-    
+    IO_HANDLER = ...
     data = [1, 2, 3, 4]
-    save(data, 'filename.json')
+    IO_HANDLER.save(data, 'filename.json')
     
-To get the data back, you can use the :func:`.load` function:
+To get the data back, you can use the :meth:`.load` method:
     
 .. code :: python
 
-    from fsc.io_helper import load
-    
-    result = load('filename.json')
+    IO_HANDLER = ...
+    result = IO_HANDLER.load('filename.json')
 
 In both cases, the file format is automatically detected from the file ending. Possible file endings are ``.json`` for JSON files, ``.msgpack`` for msgpack, and ``.p`` or ``.pickle`` for pickle.
 
@@ -31,20 +41,11 @@ You can also specify the serializer explicitly, by passing the ``json``, ``msgpa
 
     import json
     import numpy as np
-    from fsc.io_helper import save, load
     
+    IO_HANDLER = ...
     data = np.arange(4)
-    save(data, 'filename_without_ending', serializer=json)
+    IO_HANDLER.save(data, 'filename_without_ending', serializer=json)
     
-    result = load('filename_without_ending', serializer=json)
+    result = IO_HANDLER.load('filename_without_ending', serializer=json)
 
 .. note :: If no serializer is given and the file ending is not understood, the ``json`` serializer will be used for saving data. When loading, an error is thrown instead to avoid accidentally loading corrupted data.
-
-Custom encoding
----------------
-
-When serializing complex objects to and from the ``pickle`` and ``msgpack`` formats, custom encoding and decoding functions are needed. This can be done by setting a custom encoder, using the :func:`.set_encoding` function. 
-
-The argument to this function (the encoder) must have two methods named ``encode`` and ``decode``. They will be passed as the ``default`` argument in case of encoding and ``object_hook`` argument in case of decoding, as defined in the ``json`` module.
-
-To see how such an encoder / decoder could be done, you can have a look at ``io_helper/default_encoding.py``.

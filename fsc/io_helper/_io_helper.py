@@ -22,7 +22,20 @@ SerializerSpecs = namedtuple('SerializerSpecs', ['binary', 'encode_kwargs', 'dec
 @export
 class SerializerDispatch:
     """
-    TODO
+    Defines functions for saving and loading for a given encoding. 
+    
+    :param encoding: Object with ``encode`` and ``decode`` members, to be passed as the ``default`` and ``object_hook`` parameters, respectively (for JSON and msgpack, see e.g. :py:func:`json.dump` and :py:func:`json.load`).
+    
+    
+    Basic usage:
+    
+    .. code :: python
+    
+        import fsc.io_helper
+        
+        IO_HANDLER = fsc.io_helper.SerializerDispatch(fsc.io_helper.encoding.default)
+        IO_HANDLER.save([1, 2, 3], 'filename.json')
+        x = IO_HANDLER.load('filename.json')
     """
     def __init__(self, encoding):
         self.ext_mapping = {
@@ -54,7 +67,7 @@ class SerializerDispatch:
         )
 
     def _get_serializer(self, file_path, use_default=False):
-        """Tries to determine the correct serializer from the file extension. If none can be determined, falls back to the default (json) if ``use_default`` is true, otherwise it throws an error."""
+        """Tries to determine the correct serializer from the file extension. If none can be determined, falls back to the default (:py:mod:`json`) if ``use_default`` is true, otherwise it throws an error."""
         _, file_ext = os.path.splitext(file_path)
         try:
             return self.ext_mapping[file_ext.lower().lstrip('.')]
@@ -72,7 +85,7 @@ class SerializerDispatch:
         :param file_path:   Path to the file.
         :type file_path:    str
 
-        :param serializer:  The serializer to be used. Valid options are ``msgpack`` ``json`` and ``pickle``. By default, the serializer is determined from the file extension. If this does not work, ``json`` is used.
+        :param serializer:  The serializer to be used. Valid options are :py:mod:`msgpack` :py:mod:`json` and :py:mod:`pickle`. By default, the serializer is determined from the file extension. If this does not work, :py:mod:`json` is used.
         :type serializer:   module
         """
         if serializer == 'auto':
