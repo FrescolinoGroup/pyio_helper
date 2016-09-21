@@ -31,7 +31,8 @@ setup(
     name=pkgname_qualified,
     version=version,
     packages=[
-        pkgname_qualified
+        pkgname_qualified,
+        'fsc.io_helper.encoding'
     ],
     url='http://frescolinogroup.github.io/frescolino/pyio_helper/' + '.'.join(version.split('.')[:2]),
     include_package_data=True,
