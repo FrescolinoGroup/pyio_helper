@@ -10,6 +10,5 @@ A tool for saving / loading data from file with a given encoding and decoding fu
 
 from ._version import __version__
 
-from . import default_encoding
+from . import encoding
 from ._io_helper import *
-set_encoding(default_encoding)

@@ -3,23 +3,23 @@
 #
 # Author:  Dominik Gresch <greschd@gmx.ch>
 # Date:    20.07.2016 15:16:30 CEST
-# File:    test_encoding.py
+# File:    test.py
 
 import json
 
 import pytest
 import numpy as np
 
-from fsc.io_helper import default_encoding
+from fsc.io_helper.encoding import default
 
 @pytest.mark.parametrize('obj', ['foo', None, True, False, [1, 2, 3], 1, 1.2, 1 + 2j])
 def test_consistency_excat(obj):
     res = json.loads(
         json.dumps(
             obj, 
-            default=default_encoding.encode
+            default=default.encode
         ), 
-        object_hook=default_encoding.decode
+        object_hook=default.decode
     )
     assert obj == res
     assert type(obj) == type(res)
@@ -29,9 +29,9 @@ def test_consistency_notype(obj):
     res = json.loads(
         json.dumps(
             obj, 
-            default=default_encoding.encode
+            default=default.encode
         ), 
-        object_hook=default_encoding.decode
+        object_hook=default.decode
     )
     assert obj == res
 
@@ -40,4 +40,4 @@ def test_invalid():
         def __init__(self, x):
             self.x = x
     with pytest.raises(TypeError):
-        json.dumps(Bla(2), default=default_encoding.encode)
+        json.dumps(Bla(2), default=default.encode)
