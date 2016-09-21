@@ -97,8 +97,8 @@ class SerializerDispatch:
                 delete=False,
                 mode='wb' if specs.binary else 'w'
             ) as f:
-                serializer.dump(obj, f, **specs.encode_kwargs)
                 tmp_path = f.name
+                serializer.dump(obj, f, **specs.encode_kwargs)
             # closing necessary on Windows
             os.replace(tmp_path, file_path)
         except Exception as e:
