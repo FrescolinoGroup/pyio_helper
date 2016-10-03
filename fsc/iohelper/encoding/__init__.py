@@ -6,7 +6,7 @@
 # File:    __init__.py
 
 """
-This module contains the encodings that are defined within io_helper.
+This module contains the encodings that are defined within iohelper.
 """
 
 from . import default

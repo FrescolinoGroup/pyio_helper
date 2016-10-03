@@ -14,7 +14,7 @@ import pytest
 import msgpack
 import numpy as np
 
-from fsc.io_helper import SerializerDispatch, encoding
+from fsc.iohelper import SerializerDispatch, encoding
 
 EXACT_MSGPACK_FAILS = ['foo']
 EXACT_MSGPACK_WORKS = [None, True, False, [1, 2, 3], 1, 1.2, 1 + 2j]

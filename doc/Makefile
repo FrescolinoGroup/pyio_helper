@@ -4,7 +4,7 @@
 # You can set these variables from the command line.
 SPHINXBUILD   = sphinx-build
 VERSION = $(shell cat ../version.txt | grep -o -E [0-9]+.[0-9]+)
-HTMLBUILDDIR  = ../../../website/frescolino/pyio_helper/$(VERSION)
+HTMLBUILDDIR  = ../../../website/frescolino/pyiohelper/$(VERSION)
 
 # User-friendly check for sphinx-build
 ifeq ($(shell which $(SPHINXBUILD) >/dev/null 2>&1; echo $$?), 1)

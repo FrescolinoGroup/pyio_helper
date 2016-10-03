@@ -1,4 +1,4 @@
-pyio_helper
+pyiohelper
 ===========
 
 This module is a helper for saving and loading data from files, using a specific encoding. It also contains a default encoding, which can serialize the common built-in and ``numpy`` data types.

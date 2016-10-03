@@ -1,7 +1,7 @@
 Tutorial
 ========
 
-This tutorial will guide you through the basic steps of using the ``io_helper`` module. 
+This tutorial will guide you through the basic steps of using the ``iohelper`` module. 
 
 Creating a :class:`.SerializerDispatch` instance
 ------------------------------------------------
@@ -12,7 +12,7 @@ Unless you want to specify a custom encoding, you can use :mod:`.encoding.defaul
 
 .. code :: python
 
-    import fsc.io_helper as io
+    import fsc.iohelper as io
     IO_HANDLER = io.SerializerDispatch(io.encoding.default)
 
 Saving and loading

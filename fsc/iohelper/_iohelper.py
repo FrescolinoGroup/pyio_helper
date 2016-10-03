@@ -31,9 +31,9 @@ class SerializerDispatch:
     
     .. code :: python
     
-        import fsc.io_helper
+        import fsc.iohelper
         
-        IO_HANDLER = fsc.io_helper.SerializerDispatch(fsc.io_helper.encoding.default)
+        IO_HANDLER = fsc.iohelper.SerializerDispatch(fsc.iohelper.encoding.default)
         IO_HANDLER.save([1, 2, 3], 'filename.json')
         x = IO_HANDLER.load('filename.json')
     """

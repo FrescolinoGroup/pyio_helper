@@ -9,7 +9,7 @@ import sys
 
 from setuptools import setup
 
-pkgname = 'io_helper'
+pkgname = 'iohelper'
 pkgname_qualified = 'fsc.' + pkgname
 
 with open('doc/description.txt', 'r') as f:
@@ -34,7 +34,7 @@ setup(
         pkgname_qualified,
         pkgname_qualified + '.encoding'
     ],
-    url='http://frescolinogroup.github.io/frescolino/pyio_helper/' + '.'.join(version.split('.')[:2]),
+    url='http://frescolinogroup.github.io/frescolino/pyiohelper/' + '.'.join(version.split('.')[:2]),
     include_package_data=True,
     author='C. Frescolino',
     author_email='frescolino@lists.phys.ethz.ch',

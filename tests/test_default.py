@@ -10,7 +10,7 @@ import json
 import pytest
 import numpy as np
 
-from fsc.io_helper.encoding import default
+from fsc.iohelper.encoding import default
 
 @pytest.mark.parametrize('obj', ['foo', None, True, False, [1, 2, 3], 1, 1.2, 1 + 2j])
 def test_consistency_excat(obj):

@@ -15,4 +15,4 @@ A default encoding which can handle common numpy and built-in types is also give
 from ._version import __version__
 
 from . import encoding
-from ._io_helper import *
+from ._iohelper import *

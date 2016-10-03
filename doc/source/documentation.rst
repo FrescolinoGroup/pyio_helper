@@ -1,16 +1,16 @@
 Documentation
 =============
 
-.. automodule:: fsc.io_helper
+.. automodule:: fsc.iohelper
 
 Serializer Dispatch -- saving and loading data
 ----------------------------------------------
 
-.. autoclass:: fsc.io_helper.SerializerDispatch
+.. autoclass:: fsc.iohelper.SerializerDispatch
     :members:
     
 Default encoding
 ----------------
 
-.. automodule:: fsc.io_helper.encoding.default
+.. automodule:: fsc.iohelper.encoding.default
     :members:
