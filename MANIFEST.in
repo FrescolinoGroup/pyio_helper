@@ -1,6 +1,6 @@
 # include the symlink to the version
 include version.txt
-include fsc/io_helper/version.txt
+include fsc/iohelper/version.txt
 
 # select only the description / README from the doc
 prune doc
