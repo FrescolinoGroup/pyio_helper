@@ -38,15 +38,14 @@ class SerializerDispatch:
         x = IO_HANDLER.load('filename.json')
     """
     def __init__(self, encoding):
-        self.ext_mapping = {
-            k.lower(): v for k, v in [
-                ('p', pickle),
-                ('pickle', pickle),
-                ('msgpack', msgpack),
-                ('json', json)
-            ]
-        }
-        self.serializer_specs = OrderedDict(
+        # why k.lower() here, there might be an ending with upper case?
+        self.ext_mapping = dict(
+                p=pickle,
+                pickle=pickle,
+                msgpack=msgpack,
+                json=json
+            )
+        self.serializer_specs = dict(
             [
                 (json, SerializerSpecs(
                     binary=False,
@@ -61,7 +60,7 @@ class SerializerDispatch:
                 (pickle, SerializerSpecs(
                     binary=True,
                     encode_kwargs=dict(protocol=4),
-                    decode_kwargs={}
+                    decode_kwargs=dict()
                 ))
             ]
         )
@@ -69,11 +68,12 @@ class SerializerDispatch:
     def _get_serializer(self, file_path, use_default=False):
         """Tries to determine the correct serializer from the file extension. If none can be determined, falls back to the default (:py:mod:`json`) if ``use_default`` is true, otherwise it throws an error."""
         _, file_ext = os.path.splitext(file_path)
+        # removed lower(), why lstrip here?
         try:
-            return self.ext_mapping[file_ext.lower().lstrip('.')]
+            return self.ext_mapping[file_ext.lstrip('.')]
         except KeyError:
             if use_default:
-                return next(iter(self.serializer_specs.keys()))
+                return json
             else:
                 raise ValueError("Could not guess serializer from file ending '{}'".format(file_ext))
 
