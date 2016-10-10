@@ -11,6 +11,8 @@ To use the ``iohelper`` module, you must first create a :class:`.SerializerDispa
 
     import fsc.iohelper as io
     IO_HANDLER = io.SerializerDispatch(io.encoding.default)
+    
+, which dispatches the saving and loading to either :py:mod:`json`, :py:mod:`msgpack` or :py:mod:`pickle`
 
 Saving and loading
 ------------------
@@ -51,4 +53,5 @@ You can also specify the serializer explicitly, by passing the ``json``, ``msgpa
 
 Custom encoding / decoding
 --------------------------
+
 The first thing you need to do is creating an instance of the :class:`.SerializerDispatch` class. The constructor takes a single argument -- an object which has two members ``encode`` and ``decode``. The ``encode`` function should convert the object into a JSON / msgpack - compatible type, and ``decode`` should do the inverse. When saving / loading, the functions are passed as the ``default`` (to :py:func:`json.dump`) and ``object_hook`` (to :py:func:`json.load`) parameters, respectively.

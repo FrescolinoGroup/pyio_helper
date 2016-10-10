@@ -11,7 +11,7 @@ import os
 import json
 import pickle
 import tempfile
-from collections import namedtuple, OrderedDict
+from collections import namedtuple
 
 import msgpack
 
@@ -46,7 +46,7 @@ class SerializerDispatch:
                 ('json', json)
             ]
         }
-        self.serializer_specs = OrderedDict(
+        self.serializer_specs = dict(
             [
                 (json, SerializerSpecs(
                     binary=False,
@@ -61,7 +61,7 @@ class SerializerDispatch:
                 (pickle, SerializerSpecs(
                     binary=True,
                     encode_kwargs=dict(protocol=4),
-                    decode_kwargs={}
+                    decode_kwargs=dict()
                 ))
             ]
         )
@@ -73,7 +73,7 @@ class SerializerDispatch:
             return self.ext_mapping[file_ext.lower().lstrip('.')]
         except KeyError:
             if use_default:
-                return next(iter(self.serializer_specs.keys()))
+                return json
             else:
                 raise ValueError("Could not guess serializer from file ending '{}'".format(file_ext))
 
