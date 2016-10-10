@@ -48,7 +48,7 @@ def test_consistency_notype(obj, serializer):
         res = IO_HANDLER.load(f.name, serializer=serializer)
     assert obj == res
 
-@pytest.mark.parametrize('ending', ['.json', '.msgpack', '.p', '.pickle']) 
+@pytest.mark.parametrize('ending', ['.json', '.msgpack', '.p', '.pickle', '.JsoN', '.MsgPack', '.P', '.PicKle']) 
 @pytest.mark.parametrize('obj', NO_TYPE + EXACT_MSGPACK_WORKS)
 def test_implicit_serializer(obj, ending):
     filename = 'tmpfile' + ending

@@ -78,14 +78,14 @@ class SerializerDispatch:
                 raise ValueError("Could not guess serializer from file ending '{}'".format(file_ext))
 
     def save(self, obj, file_path, serializer='auto'):
-        """Saves an object to the file given in ``file_path``. The saving is made atomic by first creating a temporary file and then moving to the ``file_path``.
+        """Saves an object to the file given in ``file_path``. The saving is made atomic (on systems where :py:func:`os.replace` is atomic) by first creating a temporary file and then moving to the ``file_path``.
 
         :param obj:         Object to be saved.
 
         :param file_path:   Path to the file.
         :type file_path:    str
 
-        :param serializer:  The serializer to be used. Valid options are :py:mod:`msgpack` :py:mod:`json` and :py:mod:`pickle`. By default, the serializer is determined from the file extension. If this does not work, :py:mod:`json` is used.
+        :param serializer:  The serializer to be used. Valid options are :py:mod:`msgpack` :py:mod:`json` and :py:mod:`pickle`. By default, the serializer is determined from the file extension. If this does not work, :py:mod:`json` is used to avoid data loss.
         :type serializer:   module
         """
         if serializer == 'auto':
@@ -111,7 +111,7 @@ class SerializerDispatch:
         :param file_path:   Path to the file.
         :type file_path:    str
 
-        :param serializer:  The serializer which should be used to load the result. By default, it tries to guess from the file extension. If no serializer is given and it cannot be guessed from the file ending, an error is thrown, to avoid loading corrupted data.
+        :param serializer:  The serializer which should be used to load the result. By default, is deduced from the file extension. If no serializer is given and it cannot be deduced from the file ending, a :py:class:`ValueError` is raised, to avoid loading corrupted data.
         :type serializer:   module
         """
         if serializer == 'auto':

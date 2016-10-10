@@ -6,10 +6,7 @@ This tutorial will guide you through the basic steps of using the ``iohelper`` m
 Creating a :class:`.SerializerDispatch` instance
 ------------------------------------------------
 
-The first thing you need to do is creating an instance of the :class:`.SerializerDispatch` class. The constructor takes a single argument -- an object which has two members ``encode`` and ``decode``. The ``encode`` function should convert the object into a JSON / msgpack - compatible type, and ``decode`` should do the inverse. When saving / loading, the functions are passed as the ``default`` and ``object_hook`` parameters, respectively (see :py:func:`json.dump` and :py:func:`json.load`).
-
-Unless you want to specify a custom encoding, you can use :mod:`.encoding.default`. This encoding handles common numpy and built-in types.
-
+To use the ``iohelper`` module, you must first create a :class:`.SerializerDispatch` instance. The instance is created with a specific encoding / decoding. Unless you want to use a custom encoding (see :ref:`custom`), you can use :mod:`.encoding.default`. This encoding handles common numpy and built-in types.
 .. code :: python
 
     import fsc.iohelper as io
@@ -44,8 +41,14 @@ You can also specify the serializer explicitly, by passing the ``json``, ``msgpa
     
     IO_HANDLER = ...
     data = np.arange(4)
-    IO_HANDLER.save(data, 'filename_without_ending', serializer=json)
+    IO_HANDLER.save(data, 'any_filename', serializer=json)
     
-    result = IO_HANDLER.load('filename_without_ending', serializer=json)
+    result = IO_HANDLER.load('any_filename', serializer=json)
 
 .. note :: If no serializer is given and the file ending is not understood, the ``json`` serializer will be used for saving data. When loading, an error is thrown instead to avoid accidentally loading corrupted data.
+
+.. _custom:
+
+Custom encoding / decoding
+--------------------------
+The first thing you need to do is creating an instance of the :class:`.SerializerDispatch` class. The constructor takes a single argument -- an object which has two members ``encode`` and ``decode``. The ``encode`` function should convert the object into a JSON / msgpack - compatible type, and ``decode`` should do the inverse. When saving / loading, the functions are passed as the ``default`` (to :py:func:`json.dump`) and ``object_hook`` (to :py:func:`json.load`) parameters, respectively.

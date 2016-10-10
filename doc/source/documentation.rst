@@ -9,8 +9,8 @@ Serializer Dispatch -- saving and loading data
 .. autoclass:: fsc.iohelper.SerializerDispatch
     :members:
     
-Default encoding
-----------------
+Default encoding -- :mod:`.encoding.default`
+--------------------------------------------
 
 .. automodule:: fsc.iohelper.encoding.default
     :members:
