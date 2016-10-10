@@ -7,12 +7,13 @@ Creating a :class:`.SerializerDispatch` instance
 ------------------------------------------------
 
 To use the ``iohelper`` module, you must first create a :class:`.SerializerDispatch` instance. The instance is created with a specific encoding / decoding. Unless you want to use a custom encoding (see :ref:`custom`), you can use :mod:`.encoding.default`. This encoding handles common numpy and built-in types.
+
 .. code :: python
 
     import fsc.iohelper as io
     IO_HANDLER = io.SerializerDispatch(io.encoding.default)
     
-, which dispatches the saving and loading to either :py:mod:`json`, :py:mod:`msgpack` or :py:mod:`pickle`
+The task of the :class:`.SerializerDispatch` instance is to choose the correct serializer (possible options are :py:mod:`json`, :py:mod:`msgpack` and :py:mod:`pickle`), handle file operations and invoke the encoding and decoding functions.
 
 Saving and loading
 ------------------
@@ -54,4 +55,22 @@ You can also specify the serializer explicitly, by passing the ``json``, ``msgpa
 Custom encoding / decoding
 --------------------------
 
-The first thing you need to do is creating an instance of the :class:`.SerializerDispatch` class. The constructor takes a single argument -- an object which has two members ``encode`` and ``decode``. The ``encode`` function should convert the object into a JSON / msgpack - compatible type, and ``decode`` should do the inverse. When saving / loading, the functions are passed as the ``default`` (to :py:func:`json.dump`) and ``object_hook`` (to :py:func:`json.load`) parameters, respectively.
+To define a custom encoding and decoding, an object which has two members ``encode`` and ``decode`` is needed. This object can be passed as the ``encoding`` argument to the :class:`.SerializerDispatch` constructor. 
+
+The ``encode`` function should convert a given object into a JSON / msgpack - compatible type, and ``decode`` should do the inverse. When saving / loading, the functions are passed as the ``default`` (see :py:func:`json.dump`) and ``object_hook`` (see :py:func:`json.load`) parameters, respectively. The encoding and decoding functions are not used for the :py:mod:`pickle` serializer.
+
+
+.. code :: python
+
+    import fsc.iohelper as io
+
+    class Encoding:
+        def encode(obj):
+            ...
+            
+        def decode(obj):
+            ...
+            
+    IO_HANDLER = io.SerializerDispatch(Encoding)
+
+See the :mod:`.encoding.default#source` source code for a complete example implementation. 
