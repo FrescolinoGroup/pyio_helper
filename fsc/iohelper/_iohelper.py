@@ -91,9 +91,12 @@ class SerializerDispatch:
         if serializer == 'auto':
             serializer = self._get_serializer(file_path, use_default=True)
         specs = self.serializer_specs[serializer]
+        dirname = os.path.dirname(os.path.abspath(file_path))
+        if not os.path.isdir(dirname):
+            raise ValueError('Directory {} does not exist'.format(dirname))
         try:
             with tempfile.NamedTemporaryFile(
-                dir=os.path.dirname(os.path.abspath(file_path)),
+                dir=dirname,
                 delete=False,
                 mode='wb' if specs.binary else 'w'
             ) as f:

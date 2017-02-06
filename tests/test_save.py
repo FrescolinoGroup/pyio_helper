@@ -56,3 +56,7 @@ def test_implicit_serializer(obj, ending):
     res = IO_HANDLER.load(filename)
     assert obj == res
     os.remove(filename)
+
+def test_invalid_path():
+    with pytest.raises(ValueError):
+        IO_HANDLER.save(3, 'invalid/path/file.json')
