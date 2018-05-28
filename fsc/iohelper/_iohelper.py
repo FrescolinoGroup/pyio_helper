@@ -22,22 +22,25 @@ SerializerSpecs = namedtuple('SerializerSpecs', ['binary', 'encode_kwargs', 'dec
 @export
 class SerializerDispatch:
     """
-    Defines functions for saving and loading for a given encoding. 
-    
+    Defines functions for saving and loading for a given encoding.
+
     :param encoding: Object with ``encode`` and ``decode`` members, to be passed as the ``default`` and ``object_hook`` parameters, respectively (for JSON and msgpack, see e.g. :py:func:`json.dump` and :py:func:`json.load`).
-    
-    
+
+    :param exclude: List of excluded serializers.
+    :type exclude: list
+
+
     Basic usage:
-    
+
     .. code :: python
-    
+
         import fsc.iohelper
-        
+
         IO_HANDLER = fsc.iohelper.SerializerDispatch(fsc.iohelper.encoding.default)
         IO_HANDLER.save([1, 2, 3], 'filename.json')
         x = IO_HANDLER.load('filename.json')
     """
-    def __init__(self, encoding):
+    def __init__(self, encoding, exclude=[]):
         self.ext_mapping = {
             k.lower(): v for k, v in [
                 ('p', pickle),
@@ -45,6 +48,7 @@ class SerializerDispatch:
                 ('msgpack', msgpack),
                 ('json', json)
             ]
+            if v not in exclude
         }
         self.serializer_specs = dict(
             [
@@ -56,7 +60,7 @@ class SerializerDispatch:
                 (msgpack, SerializerSpecs(
                     binary=True,
                     encode_kwargs=dict(default=encoding.encode),
-                    decode_kwargs=dict(object_hook=encoding.decode)
+                    decode_kwargs=dict(object_hook=encoding.decode, encoding='utf-8')
                 )),
                 (pickle, SerializerSpecs(
                     binary=True,
@@ -65,6 +69,8 @@ class SerializerDispatch:
                 ))
             ]
         )
+        for excluded_serializer in exclude:
+            self.serializer_specs.pop(excluded_serializer, None)
 
     def _get_serializer(self, file_path, use_default=False):
         """Tries to determine the correct serializer from the file extension. If none can be determined, falls back to the default (:py:mod:`json`) if ``use_default`` is true, otherwise it throws an error."""
