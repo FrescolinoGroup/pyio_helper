@@ -22,29 +22,26 @@ except IOError:
 
 with open('version.txt', 'r') as f:
     version = f.read().strip()
-    
-requirements = ['msgpack-python', 'fsc.export', 'numpy']
-if sys.version_info < (3,):
+
+if sys.version_info < (3, ):
     raise ValueError('only Python 3.x and higher are supported')
 
 setup(
     name=pkgname_qualified,
     version=version,
-    packages=[
-        pkgname_qualified,
-        pkgname_qualified + '.encoding'
-    ],
-    url='http://frescolinogroup.github.io/frescolino/pyiohelper/' + '.'.join(version.split('.')[:2]),
+    packages=[pkgname_qualified, pkgname_qualified + '.encoding'],
+    url='http://frescolinogroup.github.io/frescolino/pyiohelper/' +
+    '.'.join(version.split('.')[:2]),
     include_package_data=True,
     author='C. Frescolino',
     author_email='frescolino@lists.phys.ethz.ch',
     description=description,
-    install_requires=requirements,
+    python_requires='>=3.5',
+    install_requires=['msgpack~=1.0', 'fsc.export', 'numpy'],
     long_description=readme,
     classifiers=[
         'License :: OSI Approved :: Apache Software License',
-        'Programming Language :: Python :: 3',
-        'Topic :: Utilities'
+        'Programming Language :: Python :: 3', 'Topic :: Utilities'
     ],
     license='Apache',
 )

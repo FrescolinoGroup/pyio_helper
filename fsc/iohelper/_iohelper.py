@@ -4,7 +4,6 @@
 # Author:  Dominik Gresch <greschd@gmx.ch>
 # Date:    08.03.2016 10:21:06 CET
 # File:    _save_load.py
-
 """Free functions for saving and loading objects with a given encoding."""
 
 import os
@@ -17,7 +16,9 @@ import msgpack
 
 from fsc.export import export
 
-SerializerSpecs = namedtuple('SerializerSpecs', ['binary', 'encode_kwargs', 'decode_kwargs'])
+SerializerSpecs = namedtuple('SerializerSpecs',
+                             ['binary', 'encode_kwargs', 'decode_kwargs'])
+
 
 @export
 class SerializerDispatch:
@@ -42,33 +43,26 @@ class SerializerDispatch:
     """
     def __init__(self, encoding, exclude=[]):
         self.ext_mapping = {
-            k.lower(): v for k, v in [
-                ('p', pickle),
-                ('pickle', pickle),
-                ('msgpack', msgpack),
-                ('json', json)
-            ]
+            k.lower(): v
+            for k, v in [('p', pickle), ('pickle',
+                                         pickle), ('msgpack',
+                                                   msgpack), ('json', json)]
             if v not in exclude
         }
-        self.serializer_specs = dict(
-            [
-                (json, SerializerSpecs(
-                    binary=False,
-                    encode_kwargs=dict(default=encoding.encode),
-                    decode_kwargs=dict(object_hook=encoding.decode)
-                )),
-                (msgpack, SerializerSpecs(
-                    binary=True,
-                    encode_kwargs=dict(default=encoding.encode),
-                    decode_kwargs=dict(object_hook=encoding.decode, encoding='utf-8')
-                )),
-                (pickle, SerializerSpecs(
-                    binary=True,
-                    encode_kwargs=dict(protocol=4),
-                    decode_kwargs=dict()
-                ))
-            ]
-        )
+        self.serializer_specs = dict([
+            (json,
+             SerializerSpecs(binary=False,
+                             encode_kwargs=dict(default=encoding.encode),
+                             decode_kwargs=dict(object_hook=encoding.decode))),
+            (msgpack,
+             SerializerSpecs(binary=True,
+                             encode_kwargs=dict(default=encoding.encode),
+                             decode_kwargs=dict(object_hook=encoding.decode))),
+            (pickle,
+             SerializerSpecs(binary=True,
+                             encode_kwargs=dict(protocol=4),
+                             decode_kwargs=dict()))
+        ])
         for excluded_serializer in exclude:
             self.serializer_specs.pop(excluded_serializer, None)
 
@@ -81,7 +75,9 @@ class SerializerDispatch:
             if use_default:
                 return json
             else:
-                raise ValueError("Could not guess serializer from file ending '{}'".format(file_ext))
+                raise ValueError(
+                    "Could not guess serializer from file ending '{}'".format(
+                        file_ext))
 
     def save(self, obj, file_path, serializer='auto'):
         """Saves an object to the file given in ``file_path``. The saving is made atomic (on systems where :py:func:`os.replace` is atomic) by first creating a temporary file and then moving to the ``file_path``.
@@ -102,10 +98,8 @@ class SerializerDispatch:
             raise ValueError('Directory {} does not exist'.format(dirname))
         try:
             with tempfile.NamedTemporaryFile(
-                dir=dirname,
-                delete=False,
-                mode='wb' if specs.binary else 'w'
-            ) as f:
+                    dir=dirname, delete=False,
+                    mode='wb' if specs.binary else 'w') as f:
                 tmp_path = f.name
                 serializer.dump(obj, f, **specs.encode_kwargs)
             # closing necessary on Windows
